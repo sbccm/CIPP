@@ -894,9 +894,24 @@ export const useCippUserActions = () => {
           type: 'switch',
           name: 'MustChange',
           label: 'Must Change Password at Next Logon',
+          helperText:
+            'Not supported for directory-synced (on-premises AD) accounts. Those resets go through password writeback, which always requires a change at next logon.',
         },
       ],
       confirmText: 'Are you sure you want to reset the password for [userPrincipalName]?',
+      multiPost: false,
+      condition: () => canWriteUser,
+    },
+    {
+      label: 'Require Password Change at Next Logon',
+      type: 'POST',
+      icon: <Password />,
+      url: '/api/ExecRequirePasswordChange',
+      data: {
+        ID: 'id',
+      },
+      confirmText:
+        'Require [userPrincipalName] to change their password at next logon? This does not reset the password. Not supported for directory-synced accounts.',
       multiPost: false,
       condition: () => canWriteUser,
     },
